@@ -94,25 +94,23 @@
            name: {type: String, required: true, default:xxx},
         }
       5). 注意
-      1)	此方式用于父组件向子组件传递数据
-      2)	所有标签属性都会成为组件对象的属性, 模板页面可以直接引用
-      3)问题:
-      a.如果需要向非子后代传递数据必须多层逐层传递
-      b.兄弟组件间也不能直接props通信, 必须借助父组件才可以
+        1)	此方式用于父组件向子组件传递数据
+        2)	所有标签属性都会成为组件对象的属性, 模板页面可以直接引用
+        3)问题:
+        a.如果需要向非子后代传递数据必须多层逐层传递
+        b.兄弟组件间也不能直接props通信, 必须借助父组件才可以
 
 #####组件间通信: vue自定义事件
       1). 绑定事件监听
-      // 方式一: 通过v-on绑定
-      @delete_todo="deleteTodo"
-      // 方式二: 通过$on()
-      this.$refs.xxx.$on('delete_todo', function (todo) {
-      this.deleteTodo(todo)
-      })
-
+        // 方式一: 通过v-on绑定
+        @delete_todo="deleteTodo"
+        // 方式二: 通过$on()
+        this.$refs.xxx.$on('delete_todo', function (todo) {
+        this.deleteTodo(todo)
+        })
       2). 触发事件
-      // 触发事件(只能在父组件中接收)
-      this.$emit(eventName, data)
-
+        // 触发事件(只能在父组件中接收)
+        this.$emit(eventName, data)
       3). 注意:
-      1)此方式只用于子组件向父组件发送消息(数据)
-      2)问题: 隔代组件或兄弟组件间通信此种方式不合适
+        1)此方式只用于子组件向父组件发送消息(数据)
+        2)问题: 隔代组件或兄弟组件间通信此种方式不合适
