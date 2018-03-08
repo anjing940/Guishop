@@ -2,7 +2,7 @@
   <div class="profile">
     <HeaderTop title="我的"/>
     <section class="profile-number">
-      <router-link to="/login"  class="profile-link">
+      <a href="#" @click="goto('/login')" class="profile-link">
         <div class="profile_image">
           <i class="iconfont icon-person"></i>
         </div>
@@ -18,7 +18,7 @@
         <span class="arrow">
               <i class="iconfont icon-jiantou1"></i>
             </span>
-      </router-link>
+      </a>
     </section>
     <section class="profile_info_data border-1px">
       <ul class="info_data_list">
@@ -95,7 +95,12 @@
   export default {
     components:{
       HeaderTop
-    }
+    },
+    methods:{
+      goto(path){
+        this.$router.push(path)
+      }
+  }
   }
 </script>
 <style lang="stylus" rel="stylesheet/stylus">

@@ -120,3 +120,50 @@
 	  3). 注意:
 	    1)此方式只用于子组件向父组件发送消息(数据)
 	    2)问题: 隔代组件或兄弟组件间通信此种方式不合适
+
+##实现思路
+     一.底部导航
+      :class={on:$route.path==='/msite'} @click='goto('/msite')'
+      methods:{
+          goto(path){
+            this.$router.replace(path)
+          }
+        }
+      二.头部实现思路
+      使用slot组件通信方式通过父组件向子组件传递数据
+      抽取子组件
+      <slot name="search">//通过slot来占位
+      <span class="header_title">
+         <span class="header_title_text ellipsis">{{title}}</span> //通过表达式字符串来传递参数数据
+      </span>
+      <slot name="login">
+      props：{
+        title:String
+      }
+      父组件
+      <HeaderTop title="昌平区北七家宏福科技园">
+            <span class="header_search" slot="search">
+                  <i class="iconfont icon-sousuo"></i>
+            </span>
+            <span class="header_login" slot="login">
+                  <span class="header_login_text">登录|注册</span>
+            </span>
+      </HeaderTop>
+      三.登录注册页面
+      短信登录或密码登录
+      定义登录方式，默认为true
+       :class={on:loginWay} @click='setLoginWay(true)'//短信登录
+       :class={on:!loginWay} @click='setLoginWay(false)'//密码登录
+        data():{
+          return:
+            loginWay:true
+        }
+        methdos:{
+          setKoginWay(loginWay){
+            this.loginWay = loginWay
+          }
+        }
+        返回前一级目录
+        @click='$router.push.back'
+
+
