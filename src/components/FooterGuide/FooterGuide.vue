@@ -1,24 +1,24 @@
 <template>
     <div class="footer_guide border-1px">
-      <span href="javascript:;" class="guide_item" @click="goto('/msite')" :class="{on:$route.path==='/msite'}">
+      <span  class="guide_item" :class="{on:$route.path==='/msite'}"@click="goto('/msite')">
         <span class="item_icon">
           <i class="iconfont icon-waimai"></i>
         </span>
           <span>外卖</span>
       </span>
-      <span href="javascript:;" class="guide_item" @click="goto('/search')"  :class="{on:$route.path==='/search'}">
+      <span class="guide_item" :class="{on:$route.path==='/search'}"@click="goto('/search')">
         <span class="item_icon">
           <i class="iconfont icon-search"></i>
         </span>
           <span>搜索</span>
       </span>
-      <span href="javascript:;" class="guide_item" @click="goto('/order')" :class="{on:$route.path==='/order'}">
+      <span  class="guide_item" :class="{on:$route.path==='/order'}"@click="goto('/order')">
         <span class="item_icon">
           <i class="iconfont icon-dingdan"></i>
         </span>
           <span>订单</span>
       </span>
-      <span href="javascript:;" class="guide_item" @click="goto('/profile')":class="{on:$route.path==='/profile'}">
+      <span class="guide_item":class="{on:$route.path==='/profile'}"@click="goto('/profile')">
         <span class="item_icon">
           <i class="iconfont icon-geren"></i>
         </span>

@@ -134,7 +134,6 @@
   import HeaderTop from "../../components/HeaderTop/HeaderTop.vue"
   import ShopList from "../../components/ShopList/ShopList.vue"
   export default {
-
     mounted () {
       new Swiper('.swiper-container', {
         pagination: {
