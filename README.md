@@ -41,78 +41,78 @@
       差别4：使用dom控制样式时的差别。当使用javascript控制dom去改变样式的时候，只能使用link标签，因为@import不是dom可以控制的。
 ## 5.组件间通信:
 #####消息订阅与发布(PubSubJS库)
-  1)订阅消息
-  PubSub.subscribe('msg', function(msg, data){})
-  发布消息
-  PubSub.publish('msg', data)
-  注意
-  优点: 此方式可实现任意关系组件间通信(数据)
+      1)订阅消息
+      PubSub.subscribe('msg', function(msg, data){})
+      发布消息
+      PubSub.publish('msg', data)
+      注意
+      优点: 此方式可实现任意关系组件间通信(数据)
 
-  2)事件的2个重要操作(总结)
-  1)绑定事件监听 (订阅消息)
-  目标: 标签元素  <button>
-  事件名(类型): click/focus
-  回调函数: function(event){}
+      2)事件的2个重要操作(总结)
+      1)绑定事件监听 (订阅消息)
+      目标: 标签元素  <button>
+      事件名(类型): click/focus
+      回调函数: function(event){}
 
-  3)触发事件 (发布消息)
-  DOM事件: 用户在浏览器上对应的界面上做对应的操作
-  自定义: 编码手动触发
+      3)触发事件 (发布消息)
+      DOM事件: 用户在浏览器上对应的界面上做对应的操作
+      自定义: 编码手动触发
 
 ##### 组件间通信: slot
-  1)理解
-  此方式用于父组件向子组件传递`标签数据`
-  2)子组件: Child.vue
-  <template>
-  	<div>
-  		<slot name="xxx">不确定的标签结构1</slot>
-  		<div>组件确定的标签结构</div>
-  		<slot name="yyy">不确定的标签结构2</slot>
-  	</div>
-  </template>
+      1)理解
+      此方式用于父组件向子组件传递`标签数据`
+      2)子组件: Child.vue
+      <template>
+        <div>
+          <slot name="xxx">不确定的标签结构1</slot>
+          <div>组件确定的标签结构</div>
+          <slot name="yyy">不确定的标签结构2</slot>
+        </div>
+      </template>
 
-  3). 父组件: Parent.vue
-  <child>
-  	<div slot="xxx">xxx对应的标签结构</div>
-  	<div slot="yyy">yyyy对应的标签结构</div>
-  </child>
+      3). 父组件: Parent.vue
+      <child>
+        <div slot="xxx">xxx对应的标签结构</div>
+        <div slot="yyy">yyyy对应的标签结构</div>
+      </child>
 
 #####. 组件间通信1: props
-  1). 使用组件标签时
-  	<my-component name='tom' :age='3' :set-name='setName'></my-component>
-  2). 定义MyComponent时
-  1)在组件内声明所有的props
-  2)方式一: 只指定名称
-  props: ['name', 'age', 'setName']
-  3).方式二: 指定名称和类型
-  	props: {
-  	  name: String,
-  	  age: Number,
-  	  setNmae: Function
-  	}
-  4).方式三: 指定名称/类型/必要性/默认值
-  	props: {
-  	   name: {type: String, required: true, default:xxx},
-  	}
-  5). 注意
-  1)	此方式用于父组件向子组件传递数据
-  2)	所有标签属性都会成为组件对象的属性, 模板页面可以直接引用
-  3)问题:
-  a.如果需要向非子后代传递数据必须多层逐层传递
-  b.兄弟组件间也不能直接props通信, 必须借助父组件才可以
+      1). 使用组件标签时
+        <my-component name='tom' :age='3' :set-name='setName'></my-component>
+      2). 定义MyComponent时
+      1)在组件内声明所有的props
+      2)方式一: 只指定名称
+      props: ['name', 'age', 'setName']
+      3).方式二: 指定名称和类型
+        props: {
+          name: String,
+          age: Number,
+          setNmae: Function
+        }
+      4).方式三: 指定名称/类型/必要性/默认值
+        props: {
+           name: {type: String, required: true, default:xxx},
+        }
+      5). 注意
+      1)	此方式用于父组件向子组件传递数据
+      2)	所有标签属性都会成为组件对象的属性, 模板页面可以直接引用
+      3)问题:
+      a.如果需要向非子后代传递数据必须多层逐层传递
+      b.兄弟组件间也不能直接props通信, 必须借助父组件才可以
 
 #####组件间通信: vue自定义事件
-  1). 绑定事件监听
-  // 方式一: 通过v-on绑定
-  @delete_todo="deleteTodo"
-  // 方式二: 通过$on()
-  this.$refs.xxx.$on('delete_todo', function (todo) {
-  this.deleteTodo(todo)
-  })
+      1). 绑定事件监听
+      // 方式一: 通过v-on绑定
+      @delete_todo="deleteTodo"
+      // 方式二: 通过$on()
+      this.$refs.xxx.$on('delete_todo', function (todo) {
+      this.deleteTodo(todo)
+      })
 
-  2). 触发事件
-  // 触发事件(只能在父组件中接收)
-  this.$emit(eventName, data)
+      2). 触发事件
+      // 触发事件(只能在父组件中接收)
+      this.$emit(eventName, data)
 
-  3). 注意:
-  1)此方式只用于子组件向父组件发送消息(数据)
-  2)问题: 隔代组件或兄弟组件间通信此种方式不合适
+      3). 注意:
+      1)此方式只用于子组件向父组件发送消息(数据)
+      2)问题: 隔代组件或兄弟组件间通信此种方式不合适
