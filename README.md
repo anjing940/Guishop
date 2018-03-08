@@ -40,7 +40,7 @@
       差别3：兼容性的差别。由于@import是CSS2.1提出的所以老的浏览器不支持，@import只有在IE5以上的才能识别，而link标签无此问题。
       差别4：使用dom控制样式时的差别。当使用javascript控制dom去改变样式的时候，只能使用link标签，因为@import不是dom可以控制的。
 ## 5.组件间通信:
-#####消息订阅与发布(PubSubJS库)
+    消息订阅与发布(PubSubJS库)
 	  1)订阅消息
 	    PubSub.subscribe('msg', function(msg, data){})
 	    发布消息
@@ -58,7 +58,7 @@
 	    DOM事件: 用户在浏览器上对应的界面上做对应的操作
 	    自定义: 编码手动触发
 
-##### 组件间通信: slot
+    组件间通信: slot
 	  1)理解
 	    此方式用于父组件向子组件传递`标签数据`
 	  2)子组件: Child.vue
@@ -80,7 +80,7 @@
 	  	<div slot="login">对应的标签结构</div>
 	  </child>
 
-#####. 组件间通信1: props
+    组件间通信1: props
 	  1). 使用组件标签时
 	  	<my-component name='tom' :age='3' :set-name='setName'></my-component>
 	  2). 定义MyComponent时
@@ -104,7 +104,7 @@
 	    a.如果需要向非子后代传递数据必须多层逐层传递
 	    b.兄弟组件间也不能直接props通信, 必须借助父组件才可以
 
-#####组件间通信: vue自定义事件
+    组件间通信: vue自定义事件
 	  1). 绑定事件监听
 	    // 方式一: 通过v-on绑定
 	    @delete_todo="deleteTodo"
