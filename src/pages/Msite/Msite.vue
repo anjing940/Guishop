@@ -133,7 +133,7 @@
   import "swiper/dist/css/swiper.min.css"
   import HeaderTop from "../../components/HeaderTop/HeaderTop.vue"
   import ShopList from "../../components/ShopList/ShopList.vue"
-  import {mapState} from 'vuex'
+  //import {mapState} from 'vuex'
   export default {
     mounted () {
       new Swiper('.swiper-container', {
@@ -148,7 +148,10 @@
       ShopList
     },
     computed:{
-      ...mapState(['address'])
+//      ...mapState(['address'])
+      address(){
+        this.$store.state.address
+      }
     }
   }
 </script>
