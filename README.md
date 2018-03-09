@@ -177,6 +177,109 @@
           	http://localhost:3000/position/:geohash
           ### 示例：
             [http://localhost:3000/position/40.10038,116.36867]
+## 前后台交互的ajax
+        封装的ajax
+        返回的是一个Promise对象，有两个参数(resolve, reject)
+        axios 是一个基于 Promise 的 HTTP 客户端，专门为浏览器和 node.js 服务
+        promise使用的axios发送请求
+              // 发送get请求
+              promise = axios.get(url)
+            } else {
+              // 发送post请求
+              promise = axios.post(url, data)
+            }
+        如果请求成功调用promise.then(response => {
+                          resolve(response.data)
+                        })
+        如果请求失败调用.catch(error => {
+                        reject(error)
+                        })
+        接口文档
+        根据接口写ajax请求参数与后台交互模块
+          /**
+           * 获取地址信息(根据经纬度串)
+           */
+          export const reqAddress = geohash => ajax('/api/position/' + geohash)
 
+          /**
+           * 获取msite页面食品分类列表
+           */
+          export const reqFoodTypes = () => ajax('/api/index_category')
 
+          /**
+           * 获取msite商铺列表(根据经纬度)
+           */
+          export const reqShops = ({latitude, longitude}) => ajax('/api/shops', {latitude, longitude})
+##Vuex的管理状态
+        1.state
+          保存状态数据的state对象
+          export default {
+            latitude: 40.10038, // 纬度
+            longitude: 116.36867, // 经度
+            address: {},  // 地址信息
+            foodTypes: [], //食物分类列表
+            shops: [], // 商家列表
+          }
+        2.通过mounted:{
+          this.$store.dispatch('getAddress')//通过dispatch发送请求调用action
+        }
+        3.action
+           包含多个事件回调函数的对象
+           通过执行: commit()来触发mutation的调用, 间接更新state
+           组件中: $store.dispatch('action名称')
+          async getAddress({commit, state}) {
+            const geohash = state.latitude + ',' + state.longitude
+            const result = await reqAddress(geohash)
+            commit(RECEIVE_ADDRESS, {address: result.data})
+          }
+        4.mutation
+          1)包含多个直接更新state的方法(回调函数)的对象
+          2)谁来触发: action中的commit('mutation名称')
+          3)只能包含同步的代码, 不能写异步代码
+           [RECEIVE_ADDRESS](state, {address}) {
+              state.address = address
+            }
+        5.定义store对象
+          //配置的属性名是固定的
+          import Vue from 'vue'
+          import Vuex from 'vuex'
+          import state from './state'
+          import mutations from './mutation'
+          import getters from './getters'
+          import actions from './actions'
+          Vue.use(Vuex)
+          export default new Vuex.Store({
+            state,
+            mutations,
+            getters,
+            actions
+          })
+        6.注册store
+          //每个组件都拥有$store的属性
+          import Vue from 'vue'
+          import router from './router'
+          import App from './App'
+          import store from './store'
+          new Vue({
+            el: '#app',
+            render:h => h(App),
+            router,
+            store
+          })
+        7.根据经纬度获取位置详情
+
+## Vuex中mapState的使用方法
+       computed:{
+          // ...mapState(['address']) 可以是一个函数
+          也可以是一个对象
+            ...mapGetter({evenOrOdd: 'evenOrOdd2'})
+
+          address(){
+              return this.$store.state.address
+           }
+         }
+       }
+
+##es6拼串
+ <div class="star" :class="`star-${size}`">
 

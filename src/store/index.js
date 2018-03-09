@@ -1,3 +1,4 @@
+//配置的属性名是固定的
 import Vue from 'vue'
 import Vuex from 'vuex'
 import state from './state'

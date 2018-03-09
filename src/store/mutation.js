@@ -1,5 +1,7 @@
 /*
-vuex的mutations模块
+1)包含多个直接更新state的方法(回调函数)的对象
+2)谁来触发: action中的commit('mutation名称')
+3)只能包含同步的代码, 不能写异步代码
  */
 import {
   RECEIVE_ADDRESS,

@@ -12,8 +12,10 @@
         <form>
           <div :class="{on: loginWay}">
             <section class="login_message">
-              <input type="tel" maxlength="11" placeholder="手机号">
-              <button disabled="disabled" class="get_verification" >获取验证码</button>
+              <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
+              <button class="get_verification"
+                      :class="{right_phone: rightPhone}" v-show="!computeTime" @click="getCode" >获取验证码</button>
+              <button disabled="disabled" v-show="computeTime" class="get_verification" >{{computeTime}}s</button>
             </section>
             <section class="login_verification">
               <input type="tel" maxlength="8" placeholder="验证码">
@@ -29,15 +31,18 @@
                 <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
               </section>
               <section class="login_verification">
-                <input type="tel" maxlength="8" placeholder="密码">
-                <div class="switch_button off">
-                  <div class="switch_circle"></div>
-                  <span class="switch_text">...</span>
+                <input type="text" maxlength="8" placeholder="密码"
+                       v-if="showPassword" v-model="pwd">
+                <input type="password" maxlength="8" placeholder="密码"
+                       v-if="!showPassword" v-model="pwd">
+                <div class="switch_button off" :class="showPassword?'on':'off'" @click="switchShowPassword">
+                  <div class="switch_circle" :class="{on: showPassword}"></div>
+                  <span class="switch_text" v-show="showPassword">abc</span>
                 </div>
               </section>
               <section class="login_message">
                 <input type="text" maxlength="11" placeholder="验证码">
-                <img class="get_verification" src="./images/captcha.svg" alt="captcha">
+                <img class="get_verification" src="http://localhost:3000/captcha" alt="captcha" @click="changeCaptcha">
               </section>
             </section>
           </div>
@@ -54,16 +59,47 @@
 
 <script>
   export default {
+
     data () {
       return {
-        loginWay: true // true代表短信登陆, false密码登陆
+        loginWay: true, // true代表短信登陆, false密码登陆
+        phone: '', //手机号
+        computeTime: 0, //计时时间
+        showPassword:false,
+        pwd:''
       }
     },
-
+    computed:{
+      rightPhone(){
+        // 以1开头的11数字
+        return /^1\d{10}$/.test(this.phone)
+      }
+    },
     methods: {
       setLoginWay (loginWay) {
         this.loginWay = loginWay
+      },
+      getCode () {
+        if(this.rightPhone) { // 输入了合法的手机号
+          this.computeTime = 60
+
+          const intervalId = setInterval(() => {
+            this.computeTime--
+
+            if(this.computeTime===0) {
+              clearInterval(intervalId)
+            }
+          }, 1000)
+        }
+      },
+      // 切换密码的显示和隐藏
+      switchShowPassword () {
+        this.showPassword = !this.showPassword
+      },
+      changeCaptcha(event){
+        event.target.src = 'http://localhost:3000/captcha?time='+new Date()
       }
+
     }
   }
 </script>
@@ -129,6 +165,8 @@
                 color #ccc
                 font-size 14px
                 background transparent
+                &.right_phone
+                  color: black
             .login_verification
               position relative
               margin-top 16px
@@ -168,6 +206,8 @@
                   background #fff
                   box-shadow 0 2px 4px 0 rgba(0,0,0,.1)
                   transition transform .3s
+                  &.on
+                    transform translateX(27px)
             .login_hint
               margin-top 12px
               color #999
