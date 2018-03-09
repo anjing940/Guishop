@@ -9,6 +9,10 @@
 export default {
     components:{
       FooterGuide
+    },
+    created () {
+      // 异步获取address
+      this.$store.dispatch('getAddress')
     }
 }
 </script>
