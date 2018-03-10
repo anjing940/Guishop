@@ -9,12 +9,12 @@
         </div>
       </div>
       <div class="login_content">
-        <form>
+        <form @submit.prevent="getSubmit">
           <div :class="{on: loginWay}">
             <section class="login_message">
               <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
               <button class="get_verification"
-                      :class="{right_phone: rightPhone}" v-show="!computeTime" @click="getCode" >获取验证码</button>
+                      :class="{right_phone: rightPhone}" v-show="!computeTime" @click.prevent="getCode" >获取验证码</button>
               <button disabled="disabled" v-show="computeTime" class="get_verification" >{{computeTime}}s</button>
             </section>
             <section class="login_verification">
