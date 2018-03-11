@@ -19,7 +19,7 @@
   .shop_head
     background-color #02a774
     position fixed
-    z-index 100
+    z-index 300
     left 0
     top 0
     width 100%

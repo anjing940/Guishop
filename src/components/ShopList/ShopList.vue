@@ -1,14 +1,15 @@
 <template>
   <div class="shop_container">
     <ul class="shop_list" v-if="shops.length">
-      <li class="shop_li border-1px" v-for="(item, index) in shops" :key="index">
-        <a>
+      <router-link class="shop_li border-1px" to="/shop" tag="li"
+                   v-for="(item, index) in shops" :key="index">
+        <div>
           <div class="shop_left">
             <img class="shop_img" :src="imgBaseUrl + item.image_path">
           </div>
           <div class="shop_right">
             <section class="shop_detail_header">
-              <h4 class="shop_title ellipsis" >{{item.name}}</h4>
+              <h4 class="shop_title ellipsis">{{item.name}}</h4>
               <ul class="shop_detail_ul">
                 <li class="supports" v-for="item in item.supports" :key="item.id">{{item.icon_name}}</li>
               </ul>
@@ -35,8 +36,8 @@
               </p>
             </section>
           </div>
-        </a>
-      </li>
+        </div>
+      </router-link>
     </ul>
     <ul v-else>
       <li v-for="item in 10" :key="item">
@@ -45,11 +46,13 @@
     </ul>
   </div>
 </template>
+
 <script>
-  import {mapState} from 'vuex'
+  import { mapState } from 'vuex'
   import Star from '../Star/Star.vue'
+
   export default {
-    data(){
+    data () {
       return {
         imgBaseUrl: 'http://cangdu.org:8001/img/'
       }
@@ -62,6 +65,8 @@
     }
   }
 </script>
+
+
 <style lang="stylus" rel="stylesheet/stylus">
   @import "../../common/stylus/mixins.styl"
   .shop_container
@@ -70,7 +75,7 @@
       .shop_li
         bottom-border-1px(#f1f1f1)
         width 100%
-        >a
+        > div
           clearFix()
           display block
           box-sizing border-box

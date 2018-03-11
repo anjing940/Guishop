@@ -282,4 +282,5 @@
 
 ##es6拼串
  <div class="star" :class="`star-${size}`">
+##mock
 

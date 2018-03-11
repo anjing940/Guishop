@@ -13,6 +13,8 @@ export default {
     created () {
       // 异步获取address
       this.$store.dispatch('getAddress')
+      // 通知action获取用户信息
+      this.$store.dispatch('getUserInfo')
     }
 }
 </script>

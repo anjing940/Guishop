@@ -9,7 +9,7 @@
         </div>
       </div>
       <div class="login_content">
-        <form @submit.prevent="getSubmit">
+        <form @submit.prevent="login">
           <div :class="{on: loginWay}">
             <section class="login_message">
               <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
@@ -18,7 +18,7 @@
               <button disabled="disabled" v-show="computeTime" class="get_verification" >{{computeTime}}s</button>
             </section>
             <section class="login_verification">
-              <input type="tel" maxlength="8" placeholder="验证码">
+              <input type="tel" maxlength="8" placeholder="验证码" v-model="code">
             </section>
             <section class="login_hint">
               温馨提示：未注册硅谷外卖帐号的手机号，登录时将自动注册，且代表已同意
@@ -28,7 +28,7 @@
           <div :class="{on: !loginWay}">
             <section>
               <section class="login_message">
-                <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
+                <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名" v-model="name">
               </section>
               <section class="login_verification">
                 <input type="text" maxlength="8" placeholder="密码"
@@ -41,7 +41,7 @@
                 </div>
               </section>
               <section class="login_message">
-                <input type="text" maxlength="11" placeholder="验证码">
+                <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
                 <img class="get_verification" src="http://localhost:3000/captcha" alt="captcha" @click="changeCaptcha">
               </section>
             </section>
@@ -54,19 +54,29 @@
         <i class="iconfont icon-jiantou2"></i>
       </span>
     </div>
+    <AlertTip  @closeTip="closeTip" :alertText="alertText" v-if="alertShow"/>
   </div>
 </template>
 
 <script>
+  import AlertTip from '../../components/AlertTip/AlertTip.vue'
+  import {sendCode,smsLogin,pwdLogin} from '../../api'
   export default {
 
     data () {
       return {
         loginWay: true, // true代表短信登陆, false密码登陆
         phone: '', //手机号
+        code:'',//短信验证码
+
+        name:'',//用户名
+        pwd:'',//密码
+        captcha:'',//图片验证
+
         computeTime: 0, //计时时间
-        showPassword:false,
-        pwd:''
+        showPassword:false,//是否显示输入密码
+        alertText:'',//文本提示框
+        alertShow:false
       }
     },
     computed:{
@@ -79,17 +89,22 @@
       setLoginWay (loginWay) {
         this.loginWay = loginWay
       },
-      getCode () {
-        if(this.rightPhone) { // 输入了合法的手机号
+      async getCode () {
+        if(this.rightPhone) { // 输入了正确的手机号
           this.computeTime = 60
-
           const intervalId = setInterval(() => {
             this.computeTime--
-
-            if(this.computeTime===0) {
+            if (this.computeTime === 0) {
               clearInterval(intervalId)
             }
           }, 1000)
+          //发送ajax请求，向手机发送验证码
+          const result = await sendCode(this.phone)
+          if (result.code === 1) {
+            clearInterval(intervalId)
+            this.alertShow = true
+            this.alertText = result.msg
+          }
         }
       },
       // 切换密码的显示和隐藏
@@ -98,8 +113,57 @@
       },
       changeCaptcha(event){
         event.target.src = 'http://localhost:3000/captcha?time='+new Date()
+      },
+    async  login(){
+        let result;
+        if(this.loginWay){
+          // 短信登陆
+          const {phone,code}=this
+          if(!this.rightPhone){// 手机号
+            this.alertShow = true
+            this.alertText = '请输入正确的手机号'
+            return
+          }else if(!/^\d{6}$/.test(code)){//验证码
+            this.alertShow = true
+            this.alertText = '请输入正确的验证码'
+            return
+          }
+          // 发送ajax请求 提交登陆请求
+          result =await smsLogin({phone,code})
+        } else {// 密码登陆
+          const {name,pwd,captcha} = this
+          if(!name){
+            this.alertShow = true
+            this.alertText = '请输入用户名'
+            return
+          }else if(!pwd){
+            this.alertShow = true
+            this.alertText = '请输入密码'
+            return
+          }else if(!captcha){
+            this.alertShow = true
+            this.alertText = '请输入验证码'
+            return
+          }
+          result =await pwdLogin({name, pwd, captcha})
+        }
+        if(result.code===0){
+          const userInfo = result.data
+          this.$store.dispatch('recordUserInfo', userInfo)
+          // 回退
+          this.$router.back()
+        }else {
+          this.alertShow = true
+          this.alertText = result.msg
+        }
+      },
+        // 关闭提示框
+        closeTip () {
+          this.alertShow = false
       }
-
+    },
+    components:{
+      AlertTip
     }
   }
 </script>
