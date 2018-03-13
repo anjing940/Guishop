@@ -17,7 +17,10 @@ import {
   RECEIVE_USER_INFO,
   RECEIVE_INFO,
   RECEIVE_GOODS,
-  RECEIVE_RATINGS
+  RECEIVE_RATINGS,
+  INCREMENT_FOOD_COUNT,
+  DECREMENT_FOOD_COUNT,
+  CLEARCART
 } from './mutation-types'
 /*
 使用async和await的作用:
@@ -61,7 +64,7 @@ export default {
     commit(RECEIVE_USER_INFO, {userInfo})
   },
 
-  // 异步获取用户信息
+  // 异步获取用户信息 刷新浏览器时 如果后台存储了用户信息cookies  直接去后台异步获取
   async getUserInfo ({commit}) {
     const result = await reqUser()
     if(result.code===0) {
@@ -88,11 +91,24 @@ export default {
   },
 
 // 异步获取商家商品列表
-  async getShopGoods({commit}) {
+  async getShopGoods({commit},callback) {
     const result = await reqShopGoods()
     if(result.code===0) {
       const goods = result.data
       commit(RECEIVE_GOODS, {goods})
+      callback && callback()
     }
   },
+  //更新购物车的食物数量
+  updateFoodCount({commit},{food,isAdd}){
+    if(isAdd){
+      commit(INCREMENT_FOOD_COUNT,{food})
+    }else {
+      commit(DECREMENT_FOOD_COUNT,{food})
+    }
+  },
+  //清空购物车
+  clearCart({commit},) {
+    commit(CLEARCART)
+  }
 }

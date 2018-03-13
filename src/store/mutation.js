@@ -10,8 +10,12 @@ import {
   RECEIVE_USER_INFO,
   RECEIVE_INFO,
   RECEIVE_RATINGS,
-  RECEIVE_GOODS
+  RECEIVE_GOODS,
+  INCREMENT_FOOD_COUNT,
+  DECREMENT_FOOD_COUNT,
+  CLEARCART
 } from './mutation-types'
+import Vue from 'vue'
 
 export default {
   [RECEIVE_ADDRESS](state, {address}) {
@@ -23,7 +27,7 @@ export default {
   [RECEIVE_SHOPS](state,{shops}){
     state.shops = shops
   },
-  [RECEIVE_USER_INFO](state,{userInfo}){
+  [RECEIVE_USER_INFO](state,{userInfo}){//[RECEIVE_USER_INFO]解析为="receive_user_info"
     state.userInfo = userInfo
   },
   [RECEIVE_INFO](state, {info}) {
@@ -36,7 +40,28 @@ export default {
   [RECEIVE_GOODS](state, {goods}) {
     state.goods = goods
   },
-
+  [INCREMENT_FOOD_COUNT](state, {food}) {
+    if(!food.count) { // 第一次增加时, 没有count
+      // food.count = 1 // 添加count属性, 并指定为1
+      // 问题: 新添加的属性没有数据劫持==>数据绑定==>更新了数据但界面不变
+      Vue.set(food, 'count',1) // 给有数据绑定的对象添加指定属性名和值的属性(有绑定)
+      state.shopCart.push(food)
+    } else { // 有count
+      food.count++
+    }
+  },
+  [DECREMENT_FOOD_COUNT](state, {food}) {
+    if(food.count) { // count有值才减1
+      food.count--
+    }
+  },
+  [CLEARCART](state){
+    // 将shopCart中所有food的count置为0
+    state.shopCart.forEach((food)=>{
+      food.count=0
+    })
+    state.shopCart = []
+  }
 }
 
 

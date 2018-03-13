@@ -1,5 +1,5 @@
 /*
-当前项目接口ajax请求模块
+当前项目接口ajax请求函数模块
  */
 import ajax from './ajax'
 
@@ -39,7 +39,7 @@ export const sendCode = (phone) => ajax('/api/sendcode', {phone})
 export const smsLogin = ({phone, code}) => ajax('/api/login_sms', {phone, code}, 'POST')
 
 /*
-根据会话获取用户信息
+根据会话获取用户信息cookies
  */
 export const reqUser = () => ajax('/api/userinfo')
 /**

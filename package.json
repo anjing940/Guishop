@@ -13,6 +13,7 @@
   "dependencies": {
     "ajax": "0.0.4",
     "axios": "^0.18.0",
+    "better-scroll": "^1.8.4",
     "mockjs": "^1.0.1-beta3",
     "swiper": "^4.1.6",
     "vue": "^2.5.2",

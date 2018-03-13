@@ -128,7 +128,7 @@
             this.alertText = '请输入正确的验证码'
             return
           }
-          // 发送ajax请求 提交登陆请求
+          // 发送ajax请求 手机号验证码登陆提交登陆请求
           result =await smsLogin({phone,code})
         } else {// 密码登陆
           const {name,pwd,captcha} = this
@@ -145,6 +145,9 @@
             this.alertText = '请输入验证码'
             return
           }
+          /*
+          用户名密码登陆
+          */
           result =await pwdLogin({name, pwd, captcha})
         }
         if(result.code===0){

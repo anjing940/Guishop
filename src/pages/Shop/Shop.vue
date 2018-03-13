@@ -22,6 +22,8 @@
     mounted () {
       // 通知action异步获取info
       this.$store.dispatch('getShopInfo')
+      //通知action异步获取商家列表
+      this.$store.dispatch('getShopGoods')
     },
     components: {
       ShopHeader
