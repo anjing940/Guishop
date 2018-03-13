@@ -5,7 +5,7 @@
 
         <div class="image-header">
           <!--<img :src="food.image">-->
-          <img :src="food.image">
+          <img v-lazy="food.image">
           <div class="back" @click="showOrHide(false)">
             <i class="iconfont icon-arrow_left"></i>
           </div>

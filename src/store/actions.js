@@ -31,7 +31,6 @@ import {
   2. 加async: 在await所在的函数定义的左边
  */
 export default {
-
   // 异步获取地址
   async getAddress ({commit, state}) {
     const geohash = state.latitude + ',' + state.longitude

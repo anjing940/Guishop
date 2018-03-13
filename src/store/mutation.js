@@ -53,7 +53,11 @@ export default {
   [DECREMENT_FOOD_COUNT](state, {food}) {
     if(food.count) { // count有值才减1
       food.count--
+      if(food.count===0) {// 如果数量减为0, 从购物车中移除
+        state.shopCart.splice(state.shopCart.indexOf(food), 1)
+      }
     }
+
   },
   [CLEARCART](state){
     // 将shopCart中所有food的count置为0
