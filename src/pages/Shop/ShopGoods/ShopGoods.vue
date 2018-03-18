@@ -4,7 +4,7 @@
       <div class="menu-wrapper">
         <ul>
           <!--current-->
-          <li class="menu-item" v-for="(good, index) in goods"
+          <li class="menu-item" v-for="(good, index) in goods" @click="selectCurrent(index)"
               :key="index" :class="{current:index===currentIndex}">
           <span class="text bottom-border-1px"><!---->
             <span class="icon" v-if="good.type>=0" :class="supportClasses[good.type]"></span>
@@ -15,7 +15,7 @@
       </div>
       <div class="foods-wrapper">
         <ul ref="foodsWarpperUl">
-          <li class="food-list food-list-hook" v-for="(good, index) in goods" :key="index" @click="selectCurrent(index)">
+          <li class="food-list food-list-hook" v-for="(good, index) in goods" :key="index" >
             <h1 class="title">{{good.name}}</h1>
             <ul>
               <li class="food-item bottom-border-1px" v-for="(food, index) in good.foods" :key="index"
